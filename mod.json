@@ -1,10 +1,10 @@
 {
-	"geode": "3.2.0",
+	"geode": "3.4.0",
 	"gd": {
 		"android": "2.206",
 		"win": "2.206"
 	},
-	"version": "v1.1.0",
+	"version": "v1.2.1",
 	"id": "omgrod.geodify",
 	"name": "Geodify",
 	"developers": ["OmgRod", "Viper"],
@@ -17,6 +17,18 @@
         "show-main": {
             "name": "Show in main menu",
             "description": "MenuLayer",
+            "type": "bool",
+            "default": true
+        },
+        "level-bg": {
+            "name": "Show in gameplay",
+            "description": "PlayLayer",
+            "type": "bool",
+            "default": false
+        },
+        "loading-screen": {
+            "name": "Show in loading screen",
+            "description": "LoadingLayer",
             "type": "bool",
             "default": true
         },
@@ -56,7 +68,7 @@
             "type": "bool",
             "default": true
         },
-        "show-search": {
+        "show-level-search": {
             "name": "Show in search filters menu",
             "description": "LevelSearchLayer",
             "type": "bool",
@@ -86,15 +98,15 @@
             "type": "bool",
             "default": true
         },
-        "external-mods": {
-            "name": "external mods",
-            "description": "For external mod layers",
-            "type": "bool",
-            "default": true
-        },
         "show-secret-rewards": {
             "name": "Show in secret chests menu",
             "description": "GauntletLayer",
+            "type": "bool",
+            "default": true
+        },
+        "external-mods": {
+            "name": "external mods",
+            "description": "For external mod layers",
             "type": "bool",
             "default": true
         }
