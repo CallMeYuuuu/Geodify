@@ -21,12 +21,12 @@ bool SwelvyBG::init(float widthmult, float hightmult, float minspeed, float maxs
     int idx = 0;
     
     for (auto layer : std::initializer_list<std::pair<ccColor3B, const char*>> {
-        { ccc3(244, 212, 142), "geode.loader/swelve-layer3.png" },
-        { ccc3(245, 174, 125), "geode.loader/swelve-layer0.png" },
-        { ccc3(236, 137, 124), "geode.loader/swelve-layer1.png" },
-        { ccc3(213, 105, 133), "geode.loader/swelve-layer2.png" },
-        { ccc3(173, 84,  146), "geode.loader/swelve-layer1.png" },
-        { ccc3(113, 74,  154), "geode.loader/swelve-layer0.png" },
+        { ccc3(41, 255, 184), "geode.loader/swelve-layer3.png" },
+        { ccc3(0, 221, 217), "geode.loader/swelve-layer0.png" },
+        { ccc3(37, 173, 223), "geode.loader/swelve-layer1.png" },
+        { ccc3(21, 94, 196), "geode.loader/swelve-layer2.png" },
+        { ccc3(27, 54, 186), "geode.loader/swelve-layer1.png" },
+        { ccc3(17, 22, 168), "geode.loader/swelve-layer0.png" },
     }) {
         float speed = dis(gen);
         if (sign(gen) == 0) {
