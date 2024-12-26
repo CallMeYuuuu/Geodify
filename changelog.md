@@ -1,3 +1,17 @@
+# v1.6.0
+
+- Added color offset option
+- remade the external mods hooks function `Fixing the PackSelectLayer apply bug`
+
+# v1.5.2
+
+- Added macOS support
+- Bugfixes
+
+# v1.5.1
+
+- Ported to Geode v4.0.0 release
+
 # v1.5.0
 
 - Fixes

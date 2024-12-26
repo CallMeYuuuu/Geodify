@@ -7,7 +7,7 @@ bool SwelvyBG::init(float widthmult, float hightmult, float minspeed, float maxs
         return false;
 
     this->setID("SwelvyBG");
-    
+
     auto winSize = CCDirector::get()->getWinSize();
     this->setContentSize(winSize);
     this->setAnchorPoint({ 0.f, 0.f });
@@ -19,7 +19,22 @@ bool SwelvyBG::init(float widthmult, float hightmult, float minspeed, float maxs
 
     float y = m_obContentSize.height + 5;
     int idx = 0;
-    
+
+    // Retrieve the color offset setting
+    auto mod = Mod::get();
+    ccColor3B colorOffset = { 0, 0, 0 }; // Default offset is zero (no adjustment)
+    bool enableColor = false;
+
+    if (mod) {
+        enableColor = mod->getSettingValue<bool>("enable-color");
+        if (enableColor) {
+            auto colorSetting = mod->getSettingValue<std::string>("color");
+            if (!colorSetting.empty()) {
+                sscanf(colorSetting.c_str(), "%hhu,%hhu,%hhu", &colorOffset.r, &colorOffset.g, &colorOffset.b);
+            }
+        }
+    }
+
     for (auto layer : std::initializer_list<std::pair<ccColor3B, const char*>> {
         { ccc3(41, 255, 184), "geode.loader/swelve-layer3.png" },
         { ccc3(0, 221, 217), "geode.loader/swelve-layer0.png" },
@@ -28,6 +43,17 @@ bool SwelvyBG::init(float widthmult, float hightmult, float minspeed, float maxs
         { ccc3(27, 54, 186), "geode.loader/swelve-layer1.png" },
         { ccc3(17, 22, 168), "geode.loader/swelve-layer0.png" },
     }) {
+        ccColor3B adjustedColor = layer.first;
+
+        if (enableColor) {
+            // Apply the color offset
+            adjustedColor = {
+                static_cast<GLubyte>(std::min(255, layer.first.r + colorOffset.r)),
+                static_cast<GLubyte>(std::min(255, layer.first.g + colorOffset.g)),
+                static_cast<GLubyte>(std::min(255, layer.first.b + colorOffset.b))
+            };
+        }
+
         float speed = dis(gen);
         if (sign(gen) == 0) {
             speed = -speed;
@@ -44,39 +70,39 @@ bool SwelvyBG::init(float widthmult, float hightmult, float minspeed, float maxs
         sprite->getTexture()->setTexParameters(&params);
         sprite->setTextureRect(rect);
         sprite->setAnchorPoint({ 0, 1 });
-        sprite->setContentSize({winSize.width * widthmult, sprite->getContentSize().height});
-        sprite->setColor(layer.first);
-        sprite->setPosition({0, y});
+        sprite->setContentSize({ winSize.width * widthmult, sprite->getContentSize().height });
+        sprite->setColor(adjustedColor);
+        sprite->setPosition({ 0, y });
         sprite->schedule(schedule_selector(SwelvyBG::updateSpritePosition));
         sprite->setUserObject("speed", CCFloat::create(speed));
         this->addChild(sprite);
 
         y -= m_obContentSize.height / 6;
         idx += 1;
-    
     }
+
     return true;
 }
 
 void SwelvyBG::updateSpritePosition(float dt) {
-    auto speed = static_cast<CCFloat*>(this->getUserObject("speed"))->getValue();
-    auto width = static_cast<CCFloat*>(this->getUserObject("width"))->getValue();
+    auto speed = typeinfo_cast<CCFloat*>(this->getUserObject("speed"))->getValue();
+    auto width = typeinfo_cast<CCFloat*>(this->getUserObject("width"))->getValue();
 
     auto sprite = typeinfo_cast<CCSprite*>(this);
     auto rect = sprite->getTextureRect();
 
     float dX = rect.origin.x - speed * dt;
-    if(dX >= std::abs(width)) {
+    if (dX >= std::abs(width)) {
         dX = 0;
     }
 
-    rect.origin = CCPoint{dX, 0};
+    rect.origin = CCPoint{ dX, 0 };
     sprite->setTextureRect(rect);
 }
 
-SwelvyBG* SwelvyBG::create(float widthmult, float m, float minspeed, float maxspeed) {
+SwelvyBG* SwelvyBG::create(float widthmult, float hightmult, float minspeed, float maxspeed) {
     auto ret = new SwelvyBG();
-    if (ret->init(widthmult,m,minspeed,maxspeed)) {
+    if (ret->init(widthmult, hightmult, minspeed, maxspeed)) {
         ret->autorelease();
         return ret;
     }
